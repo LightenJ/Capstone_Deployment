@@ -7,4 +7,3 @@ handlers:
   upload: dist/index.html
 - url: /
   static_dir: dist/
-
