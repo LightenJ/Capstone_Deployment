@@ -1,0 +1,5 @@
+/frontend/.angular
+/frontend/.vs
+/frontend/node_modules
+/backend/venv
+/backend/.idea
