@@ -3,7 +3,7 @@ from flask_cors import CORS
 from google.cloud import datastore
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r'/*': {'origins': '*'}}, supports_credentials=True)
 
 
 @app.route('/')
@@ -85,18 +85,34 @@ def delete_hero_api(hero_id: int):
     return jsonify(return_value)
 
 
-@app.route('/api/heroes', methods=['PUT'])
+@app.route('/api/heroes/', methods=['PUT'])
 def update_hero_api():
-    # Modify the specific hero in the datastore database
-    # Logic is identical to adding for Datastore, so use common code.
-    return jsonify(request.args)
+    client = datastore.Client()
+    entity = datastore.entity.Entity()
+    try:
+        entity.key = client.key('Hero', int(request.json['id']))
+        entity['name'] = request.json['name']
+        client.put(entity)
+        return_data = package_hero(entity)
+    except ValueError:
+        return_data = "Bad ID"
+
+    return jsonify(return_data)
 
 
-@app.route('/api/heroes', methods=['POST'])
+@app.route('/api/heroes/', methods=['POST'])
 def add_hero_api():
     # Add the specific hero to the datastore database
-    # Logic is identical to modifying for Datastore, so use common code.
-    return jsonify(request.args)
+    client = datastore.Client()
+    entity = datastore.entity.Entity()
+    entity.key = client.key('Hero')
+    try:
+        entity['name'] = request.json['name']
+        client.put(entity)
+        return_data = package_hero(entity)
+    except KeyError:
+        return_data = "Failed to provide a name"
+    return jsonify(return_data)
 
 
 if __name__ == '__main__':

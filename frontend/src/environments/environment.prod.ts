@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  webapiurl: (window as any)["envconfig"]["apiurl"] || "default",
+  webapiurl: "https://api-dot-capstone-deployment-332020.uk.r.appspot.com/api"
 };
