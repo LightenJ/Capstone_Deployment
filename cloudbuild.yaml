@@ -1,0 +1,12 @@
+steps:
+  # Deploy to google cloud app engine
+  - name: "gcr.io/cloud-builders/gcloud"
+    args: ["app", "deploy"]
+    dir: "frontend"
+
+  # Deploy Python code 
+  - name: "gcr.io/cloud-builders/gcloud"
+    args: ["app", "deploy"]
+    dir: "backend"
+
+timeout: "1000s"
